@@ -8,7 +8,7 @@ Data in this area views. All are 1440x900 desktop references.
 
 Colors below are sampled from flat screenshot regions. Font sizes,
 spacing, radii, and shadows are visual estimates for later implementation,
-not recovered CSS. The exact font family is unresolved; see
+not recovered CSS. The chosen font is Inter via next/font; see
 `../docs/OPEN_QUESTIONS.md`. The compressed HTML reference was not opened.
 
 ## Theme colors
@@ -50,14 +50,15 @@ on the brighter accent. Validate WCAG AA contrast when implementing.
 - Measured: solid fill; Modeled: diagonal hatching over the risk fill.
 - Not enough data: neutral gray fill, dotted outline, explicit text.
 - Selection: thick accent outline; selected table rows use accent-soft.
-- NET alternatives use solid, dashed, and dotted lines with letter labels.
+- NET v1 uses a dashed straight connector between sample stops labeled
+  "Straight line, not a route". No route lines or travel times. Route cards
+  and hazard strips return with our own router in Stage 5.
 - Zoomed out uses H3 hexagons; zoomed in uses zones, roads, and official
   boundaries. Keep risk icon plus text wherever risk is identified.
 
 ## Typography
 
-The references use a neutral sans-serif appearance. Confirm the family
-before choosing a font or adding a font dependency. Estimated scale:
+Use Inter via next/font, with tabular numbers for times. Estimated scale:
 
 | Role | Size | Weight | Line height |
 | --- | --- | --- | --- |
@@ -111,7 +112,7 @@ Approximate shadow recipes to tune against the PNGs:
 - Coverage status chips: Live, Updated daily, Static map, Global model,
   Not available; plus "May be out of date" for old data.
 - Map controls, selection tooltip, risk legend, and patterned map shapes.
-- Right panel tabs: Layers, Analysis, Evidence, Glossary; layer checkboxes
+- Right panel tabs: Layers, Analysis, Evidence, Notes; layer checkboxes
   and opacity sliders; analysis tables and result cards.
 - Timeline mode tabs, scrubber, and compact charts.
 - Forms, comparison cards, progress indicators, and sensitivity sliders.
@@ -120,8 +121,10 @@ Approximate shadow recipes to tune against the PNGs:
 
 ## Reference constraints
 
-`AGENTS.md` governs implementation. SERA's site ordering and confidence
-labels need a design decision before reuse; see the open questions.
+`AGENTS.md` and the latest product decisions govern implementation.
+SERA sites are ordered by coverage, without numbered rank badges or
+per-site confidence labels. Coverage uses rounded ranges and an Estimated
+tag. Region cards are alphabetical and use neutral coverage chips.
 Source names and numbers in the references remain Sample data. Do not
 treat them as approved sources or computed results. Use ASCII text in
 docs, code, and UI strings.

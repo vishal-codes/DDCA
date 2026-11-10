@@ -1,0 +1,103 @@
+@import "tailwindcss";
+@import "../styles/tokens.css";
+
+@theme inline {
+  --font-sans: var(--font-inter), Arial, sans-serif;
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-foreground: var(--text);
+  --color-muted: var(--text-muted);
+  --color-accent: var(--accent);
+}
+
+html {
+  color-scheme: light;
+  background: var(--surface-muted);
+  color: var(--text);
+}
+
+html[data-theme="night"] {
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-inter), Arial, sans-serif;
+  font-size: var(--text-body);
+  line-height: 1.45;
+}
+
+button, input, select, textarea {
+  font: inherit;
+}
+
+button, a, input, select {
+  min-height: 44px;
+}
+
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
+time, .tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+.setup-card {
+  width: min(100%, 560px);
+  padding: var(--space-8);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  box-shadow: var(--shadow-card);
+}
+
+.brand {
+  font-size: var(--text-section);
+  font-weight: 700;
+}
+
+.theme-toggle {
+  min-width: 64px;
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--text-muted);
+  border-radius: var(--radius-control);
+  color: var(--text);
+  background: var(--surface);
+  cursor: pointer;
+}
+
+.theme-toggle:hover {
+  background: var(--accent-soft);
+}
+
+.sample-label {
+  width: fit-content;
+  margin-top: var(--space-8);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-pill);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: var(--text-caption);
+  font-weight: 600;
+}
+
+.setup-card h1 {
+  margin: var(--space-3) 0;
+  font-size: var(--text-heading);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.setup-description {
+  color: var(--text-muted);
+}
+
+.setup-disclaimer {
+  margin-top: var(--space-8);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: var(--text-caption);
+}

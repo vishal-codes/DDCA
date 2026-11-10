@@ -23,7 +23,8 @@ Unknowns go in docs/OPEN_QUESTIONS.md. Do not guess them.
 - Desktop only, 1440x900. No mobile. No 3D map, no 2D/3D toggle.
 
 ## Product rules (never break)
-1. Never use the word "tier" anywhere (code, UI, comments, docs).
+1. Do not introduce classification labels beyond the risk scale and
+   per-source coverage statuses defined here.
    Never rank or grade regions, places, or data quality. Candidate
    depot sites may be ordered by coverage, without numbered rank
    badges or per-site confidence labels. Show their coverage as
