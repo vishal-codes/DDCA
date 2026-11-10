@@ -6,8 +6,9 @@ import type { RegionId } from "@/types/region";
 import { Dialog } from "@/components/shared/dialog";
 import { StatusChip } from "@/components/shared/status-chip";
 import { DataAgeChip } from "@/components/shared/data-age-chip";
+import type { PreviewState } from "@/types/workspace";
 
-export function CoveragePanel({ regionId, onClose }: { regionId: RegionId | null; onClose: () => void }) {
+export function CoveragePanel({ regionId, previewState = "normal", onClose }: { regionId: RegionId | null; previewState?: PreviewState; onClose: () => void }) {
   const region = regionId ? getRegion(regionId) : null;
   return (
     <Dialog title="Data in this area" kind="coverage" onClose={onClose}>
@@ -18,11 +19,11 @@ export function CoveragePanel({ regionId, onClose }: { regionId: RegionId | null
           <table className="coverage-table">
             <caption className="sr-only">Sample data coverage for {region?.name}</caption>
             <thead><tr><th scope="col">Data</th><th scope="col">Status</th><th scope="col">Source</th><th scope="col">Date</th></tr></thead>
-            <tbody>{getRegionCoverage(regionId).map((entry) => (
+            <tbody>{getRegionCoverage(regionId, previewState).map((entry) => (
               <tr key={entry.kind} className={entry.status === "not_available" ? "unavailable-row" : undefined}>
                 <th scope="row">{entry.label}</th>
                 <td><StatusChip status={entry.status} />
-                  {entry.ageLabel && <DataAgeChip updatedAt={entry.updatedAt} label={entry.ageLabel} isStale={entry.isStale} />}
+                  {(entry.ageLabel || entry.isStale) && <DataAgeChip updatedAt={entry.updatedAt} label={entry.ageLabel ?? undefined} isStale={entry.isStale} />}
                 </td>
                 <td>{entry.sourceName}</td>
                 <td>{entry.updatedAt ? <time dateTime={entry.updatedAt}>{formatSampleDate(entry.updatedAt, entry.datePrecision)}</time> : "Not enough data"}</td>

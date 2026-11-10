@@ -7,7 +7,7 @@ export function RegionCard({ region }: { region: Region }) {
   const { regionId, selectRegion } = useAppShell();
   return (
     <button type="button" className={`surface-card region-card${regionId === region.id ? " is-selected" : ""}`}
-      onClick={() => selectRegion(region.id)} aria-haspopup="dialog" aria-label={`Choose ${region.name} and view sample data coverage`}>
+      onClick={() => selectRegion(region.id)} aria-label={`Open ${region.name} sample ECHO overview`}>
       <strong>{region.name}</strong>
       <span className="caption">{region.description}</span>
       <span className="chip-group">{region.previewKinds.map((kind) => <span className="chip neutral-chip" key={kind}>{kind}</span>)}</span>

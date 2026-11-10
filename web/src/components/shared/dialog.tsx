@@ -3,7 +3,7 @@
 import { useEffect, useId, useRef } from "react";
 
 export function Dialog({ title, kind = "methods", onClose, children }: {
-  title: string; kind?: "methods" | "coverage"; onClose: () => void; children: React.ReactNode;
+  title: string; kind?: "methods" | "coverage" | "ask"; onClose: () => void; children: React.ReactNode;
 }) {
   const ref = useRef<HTMLDialogElement>(null);
   const titleId = useId();

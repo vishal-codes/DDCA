@@ -1,0 +1,23 @@
+.zone-scene { z-index: 1; }
+.zone-shape { position: absolute; min-height: 44px; color: var(--text); background: none; border: 0; display: grid; place-items: center; padding: 0; }
+.zone-fill { position: absolute; inset: 0; background: var(--risk-high); }
+.zone-risk-high { --zone-color: var(--risk-high); }
+.zone-risk-moderate { --zone-color: var(--risk-moderate); }
+.zone-risk-low { --zone-color: var(--risk-low); }
+.zone-risk-extreme { --zone-color: var(--risk-extreme); }
+.zone-fill { background: var(--zone-color, var(--missing-fill)); }
+.zone-c .population-pattern, .zone-b .population-pattern { background: repeating-linear-gradient(135deg, transparent 0 4px, var(--surface) 4px 6px), var(--zone-color, var(--missing-fill)); }
+.zone-shape.is-selected .zone-fill { filter: drop-shadow(3px 0 var(--accent)) drop-shadow(-3px 0 var(--accent)) drop-shadow(0 3px var(--accent)) drop-shadow(0 -3px var(--accent)); }
+.zone-missing .zone-fill { background: var(--missing-fill); border: 2px dotted var(--text-muted); }
+.zone-marker { display: grid; place-items: center; width: 28px; height: 28px; border: 2px solid var(--text); border-radius: 50%; color: var(--text); background: var(--surface); position: relative; font-size: 12px; font-weight: 600; }
+.zone-shape.is-selected .zone-marker { border-color: var(--accent); }
+.zone-detail { position: absolute; top: 42%; right: 40px; width: 230px; z-index: 2; padding: 12px; }
+.zone-detail h2 { margin-bottom: 6px; font-size: 14px; }
+.zone-detail > p { margin-top: 6px; }
+.zone-detail .source-tag { padding-inline: 6px; }
+.zone-table { font-size: 12px; }
+.zone-table td, .zone-table th { padding: 6px 3px; }
+.zone-table th:first-child { width: 36px; }
+.zone-table th button { min-width: 44px; padding: 4px; font-weight: 700; color: var(--text); background: transparent; border: 0; }
+.zone-table td .chip { margin-top: 4px; padding-inline: 6px; font-size: 11px; }
+.selected-row { background: var(--accent-soft); }

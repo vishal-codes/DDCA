@@ -1,0 +1,41 @@
+.mode-tab.is-active { background: var(--accent-soft); color: var(--accent); }
+.region-picker { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.region-picker button { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; padding: 16px; color: var(--text); font-weight: 700; }
+.preview-notice { display: flex; flex: 0 0 auto; align-items: center; gap: 12px; padding: 8px 16px; background: var(--surface-muted); border-bottom: 1px solid var(--border); font-size: 12px; }
+.preview-stale, .preview-offline { background: var(--stale-bg); color: var(--stale-text); }
+.official-banner { flex: 0 0 auto; }
+.regional-map { position: relative; height: 100%; min-height: 0; overflow: hidden; isolation: isolate; background: var(--map-land); }
+.regional-base { position: absolute; inset: 0; overflow: hidden; }
+.regional-terrain { position: absolute; left: 25%; top: -20%; width: 95%; height: 43%; background: var(--map-terrain); border-radius: 50%; transform: rotate(12deg); }
+.regional-water { position: absolute; left: -19%; bottom: -38%; width: 50%; height: 70%; border-radius: 50%; background: var(--map-water); transform: rotate(-35deg); }
+.base-road { position: absolute; display: block; height: 4px; width: 140%; background: var(--map-road); }
+.base-road-a { left: -10%; top: 56%; transform: rotate(-5deg); }
+.base-road-b { left: 11%; top: 43%; transform: rotate(-69deg); height: 2px; }
+.base-road-c { left: 25%; top: 65%; transform: rotate(-24deg); }
+.base-road-d { left: 3%; top: 58%; transform: rotate(-78deg); height: 2px; }
+.regional-scene { position: absolute; inset: 0; transform-origin: center; }
+.regional-zoom-1 .regional-scene { transform: scale(1.1); }
+.regional-zoom-2 .regional-scene { transform: scale(1.2); }
+.regional-map .map-caption { font-size: 11px; max-width: 150px; text-align: right; }
+.map-legend { position: absolute; bottom: 16px; left: 16px; z-index: 2; padding: 12px; font-size: 12px; }
+.map-legend > strong { display: block; font-size: 12px; margin-bottom: 6px; }
+.pattern-keys, .pattern-keys > span { display: flex; align-items: center; gap: 8px; }
+.pattern-keys { gap: 12px; margin-bottom: 8px; font-size: 11px; }
+.pattern-keys .pattern-swatch { width: 20px; height: 12px; }
+.metric-row { position: absolute; top: 16px; left: 16px; right: 128px; z-index: 2; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.metric-card { padding: 12px; min-width: 0; }
+.metric-card h2 { font-weight: 400; }
+.metric-value { font-size: 24px; font-weight: 700; line-height: 1.2; margin: 4px 0; }
+.metric-card .sample-citation { font-size: 10px; margin-bottom: 6px; }
+.metric-card .chip { font-size: 11px; padding-inline: 7px; }
+.missing-value { color: var(--text-muted); }
+.metric-value.missing-value { font-size: 20px; }
+.sample-citation { margin-top: 6px; overflow-wrap: anywhere; }
+.sample-map-alert { position: absolute; left: 50%; top: 62%; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; color: white; background: var(--risk-extreme); border: 2px solid white; font-weight: 700; }
+.sample-closure { position: absolute; left: 57%; top: 32%; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; background: var(--risk-extreme); color: white; border: 2px solid white; font-size: 24px; line-height: 1; }
+.sample-evacuation { position: absolute; left: 37%; top: 25%; width: 24%; height: 38%; border: 3px solid var(--risk-extreme); transform: rotate(-8deg); }
+.field-label, .depot-preview-form label { display: flex; flex-direction: column; gap: 4px; margin-bottom: 12px; }
+.field-label input, .field-label select, .depot-preview-form input, .depot-preview-form select { width: 100%; background: var(--surface); color: var(--text); border: 1px solid var(--text-muted); border-radius: var(--radius-control); padding: 8px 12px; }
+.checkbox-label { display: flex; align-items: center; gap: 8px; min-height: 44px; }
+.checkbox-label input { width: 16px; height: 16px; min-height: 16px; flex: 0 0 16px; accent-color: var(--accent); }
+.estimated-tag { background: var(--accent-soft); color: var(--accent); border: 0; }

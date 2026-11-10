@@ -5,6 +5,12 @@
 @import "../styles/home.css";
 @import "../styles/map.css";
 @import "../styles/methods.css";
+@import "../styles/workspace.css";
+@import "../styles/panels.css";
+@import "../styles/echo.css";
+@import "../styles/net.css";
+@import "../styles/sera.css";
+@import "../styles/ask.css";
 
 @theme inline {
   --font-sans: var(--font-inter), Arial, sans-serif;
