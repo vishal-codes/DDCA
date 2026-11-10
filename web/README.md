@@ -1,7 +1,8 @@
 # SafeEarth web
 
-Stage 1 scaffold only. The setup page uses Sample data labeling; screen
-layouts and shared application components follow in separate commits.
+Stage 1, Commit 2: app shell, Home, regional coverage, and Data and methods.
+All screens use Sample data. ECHO, NET, SERA, and Ask remain disabled until
+their layouts are added in Commit 3.
 
 ## Requirements
 
@@ -33,9 +34,28 @@ Upstream font project: https://github.com/rsms/inter.
 
 ## Structure
 
-- `src/app/`: root layout, global CSS, and temporary setup page.
+- `src/app/`: root layout, Home at `/`, and `/data-and-methods`.
+- `src/components/`: shell, shared controls, Home, coverage and methods.
 - `src/components/theme/`: theme context and accessible toggle.
-- `src/styles/tokens.css`: light/night semantic colors and shared sizing.
+- `src/styles/`: light/night tokens and screen styles.
+- `src/mocks/`: fixed region and coverage fixtures.
+- `src/lib/data/`: mock-backed functions; components never import fixtures.
+- `src/types/`: region, source status and coverage types.
+
+## Local checks for Commit 2
+
+At 1440x900, check the Home layout in light and night themes. Select each
+region card, search by city or country, and submit an unknown search.
+Open Data in this area before and after selecting a region. Check that
+Lisbon, Jakarta and Los Angeles show independent source statuses and dates.
+Sources outside California and the population dataset are undecided;
+their statuses are examples only, not rollout or provider choices.
+
+Open Data and methods from the footer and its full-page link. Verify
+Close, Escape, background dismissal, keyboard focus and return navigation.
+Try the illustration zoom and layer controls. These change only the CSS
+illustration; there is no real map or live data. The timeline follows in
+Commit 3.
 
 Follow `../AGENTS.md`, `../docs/OPEN_QUESTIONS.md`, and
 `../design/tokens.md`. Do not add real data or map integrations at this stage.

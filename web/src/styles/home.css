@@ -1,0 +1,20 @@
+.workspace-grid { display: grid; grid-template-columns: minmax(0, 1fr) 380px; height: 100%; }
+.home-sidebar { padding: 16px; overflow-y: auto; border-left: 1px solid var(--border); background: var(--surface); }
+.home-sidebar > h2 { margin-bottom: 8px; }
+.region-list { display: grid; gap: 8px; margin-bottom: 8px; }
+.region-card { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; width: 100%; text-align: left; padding: 12px; color: var(--text); }
+.region-card strong { font-weight: 700; }
+.region-card:hover { border-color: var(--accent); }
+.region-card.is-selected { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+.labels-guide { padding: 12px; }
+.labels-guide h2 { margin-bottom: 4px; }
+.labels-guide dl { margin: 0 0 8px; }
+.labels-guide dl > div { display: grid; grid-template-columns: 128px 1fr; gap: 8px; padding: 5px 0; }
+.labels-guide dd { font-size: var(--text-caption); color: var(--text-muted); margin: 0; }
+.labels-guide .source-tag { padding: 0 5px; font-weight: 400; }
+.home-search-overlay { position: absolute; top: 32px; left: 32px; z-index: 1; width: min(600px, calc(100% - 160px)); }
+.home-search-overlay h1 { font-size: var(--text-heading); font-weight: 700; line-height: 1.2; margin-bottom: 8px; max-width: 600px; }
+.region-search-large { padding: 8px; border: 1px solid var(--border); border-radius: var(--radius-card); background: var(--surface); box-shadow: var(--shadow-card); }
+.region-search-large input { border: 0; padding-inline: 12px; font-size: var(--text-section); }
+.region-search-large .primary-button { flex-shrink: 0; min-width: 88px; }
+.selected-region-card { display: flex; flex-direction: column; gap: 4px; text-align: left; margin-top: 16px; padding: 12px 16px; color: var(--text); }

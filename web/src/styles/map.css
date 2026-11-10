@@ -1,0 +1,56 @@
+.map-panel { position: relative; overflow: hidden; height: 100%; min-height: 500px; background: var(--map-water); isolation: isolate; }
+.map-artwork { position: absolute; inset: 0; transform-origin: center; }
+.map-land-shapes { position: absolute; inset: 0; }
+.land-shape { position: absolute; background: var(--map-terrain); }
+.land-shape::after { content: ""; position: absolute; inset: 1px; background: var(--map-land); }
+.land-north-america { left: 6.5%; top: 11%; width: 30%; height: 36%; clip-path: polygon(0 40%, 30% 15%, 65% 0, 88% 25%, 100% 60%, 74% 100%, 45% 89%, 16% 65%); }
+.land-north-america::after { clip-path: polygon(0 40%, 30% 15%, 65% 0, 88% 25%, 100% 60%, 74% 100%, 45% 89%, 16% 65%); }
+.land-south-america { left: 28%; top: 54%; width: 12%; height: 36%; clip-path: polygon(0 0, 72% 7%, 96% 50%, 48% 100%, 0 57%); }
+.land-south-america::after { clip-path: polygon(0 0, 72% 7%, 96% 50%, 48% 100%, 0 57%); }
+.land-europe { left: 47%; top: 15%; width: 17%; height: 21%; clip-path: polygon(0 9%, 76% 0, 100% 39%, 77% 88%, 34% 100%, 6% 62%); }
+.land-europe::after { clip-path: polygon(0 9%, 76% 0, 100% 39%, 77% 88%, 34% 100%, 6% 62%); }
+.land-africa { left: 50.8%; top: 38%; width: 16%; height: 36%; clip-path: polygon(0 4%, 72% 0, 100% 43%, 72% 100%, 24% 93%, 0 50%); }
+.land-africa::after { clip-path: polygon(0 4%, 72% 0, 100% 43%, 72% 100%, 24% 93%, 0 50%); }
+.land-asia { left: 66%; top: 17%; width: 28.3%; height: 27%; clip-path: polygon(0 5%, 73% 0, 100% 48%, 73% 91%, 34% 100%, 7% 62%); }
+.land-asia::after { clip-path: polygon(0 5%, 73% 0, 100% 48%, 73% 91%, 34% 100%, 7% 62%); }
+.land-islands { left: 74.4%; top: 59%; width: 10.4%; height: 3%; clip-path: polygon(0 17%, 82% 0, 100% 82%, 9% 100%); }
+.land-islands::after { clip-path: polygon(0 17%, 82% 0, 100% 82%, 9% 100%); }
+.land-australia { left: 83%; top: 69%; width: 13.2%; height: 14.2%; clip-path: polygon(0 10%, 85% 0, 100% 83%, 28% 100%); }
+.land-australia::after { clip-path: polygon(0 10%, 85% 0, 100% 83%, 28% 100%); }
+.map-events { position: absolute; inset: 0; }
+.map-events > span { position: absolute; display: block; transform: translate(-50%, -50%); }
+.event-dot { width: 20px; height: 20px; border-radius: 50%; background: var(--risk-low); border: 2px solid #fff; }
+.event-warning { width: 24px; height: 24px; background: #fff; clip-path: polygon(30% 0, 70% 0, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0 70%, 0 30%); }
+.event-warning::after { content: ""; position: absolute; inset: 2px; background: var(--risk-extreme); clip-path: inherit; }
+.event-watch { width: 24px; height: 24px; background: #fff; clip-path: polygon(50% 0, 100% 100%, 0 100%); }
+.event-watch::after { content: ""; position: absolute; inset: 4px 3px 2px; background: var(--risk-high); clip-path: inherit; }
+.event-one { left: 31.1%; top: 24.5%; }
+.event-two { left: 19.3%; top: 33.9%; }
+.event-three { left: 55.7%; top: 25.8%; }
+.event-four { left: 46.8%; top: 30.8%; }
+.event-five { left: 71.6%; top: 32.3%; }
+.event-six { left: 88.6%; top: 78.8%; }
+.event-seven { left: 85.3%; top: 27.8%; }
+.event-eight { left: 58.4%; top: 60.7%; }
+.event-nine { left: 79.2%; top: 62%; }
+.event-ten { left: 33%; top: 78.5%; }
+.map-controls { position: absolute; top: 16px; right: 16px; z-index: 2; display: flex; align-items: flex-end; flex-direction: column; gap: 8px; }
+.zoom-controls { width: 46px; overflow: hidden; }
+.zoom-controls button { display: block; width: 44px; min-height: 44px; border: 0; background: var(--surface); color: var(--text); font-weight: 600; }
+.zoom-controls button:hover:not(:disabled) { background: var(--accent-soft); }
+.zoom-controls button:focus-visible { outline-offset: -4px; }
+.zoom-controls button:disabled { color: var(--text-muted); opacity: 0.6; }
+.layers-trigger { color: var(--text); padding: 8px 12px; font-weight: 600; }
+.illustration-layers { padding: 8px 12px; }
+.illustration-layers label { display: flex; gap: 8px; align-items: center; min-height: 44px; }
+.illustration-layers input { width: 16px; height: 16px; min-height: 16px; accent-color: var(--accent); }
+.event-legend { position: absolute; left: 16px; bottom: 16px; display: flex; gap: 12px; align-items: center; padding: 12px; font-size: var(--text-caption); }
+.event-legend strong { font-weight: 700; }
+.event-key { display: inline-flex; align-items: center; gap: 5px; border-radius: var(--radius-pill); padding: 1px 8px; font-weight: 600; }
+.event-key-clear { background: var(--risk-low-bg); color: var(--risk-low-text); }
+.event-key-watch { background: var(--risk-high-bg); color: var(--risk-high-text); }
+.event-key-warning { background: var(--risk-extreme-bg); color: var(--risk-extreme-text); }
+.legend-shape { display: inline-block; width: 8px; height: 8px; background: currentColor; border-radius: 50%; }
+.event-key-watch .legend-shape { border-radius: 0; clip-path: polygon(50% 0, 100% 100%, 0 100%); }
+.event-key-warning .legend-shape { border-radius: 0; clip-path: polygon(30% 0, 70% 0, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0 70%, 0 30%); }
+.map-caption { position: absolute; right: 16px; bottom: 16px; }
