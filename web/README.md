@@ -1,8 +1,7 @@
 # SafeEarth web
 
-Stage 1 layouts: Home, ECHO, NET stops and hazards, SERA, Ask, regional
-coverage, and Data and methods. All screens use Sample data. No map
-library, real routing, optimization, backend, or assistant service is used.
+Los Angeles ECHO has a California wildfire pilot. Home, NET stops and
+hazards, SERA, Ask, and the other ECHO regions use Sample data.
 
 ## Requirements
 
@@ -17,6 +16,15 @@ Open `http://localhost:3000`. Light is the default theme. The Night/Day
 button saves the preference in browser storage when available.
 Development and production builds use Webpack; Turbopack's CSS processing
 requires a local port that is blocked in the restricted build environment.
+
+## Try the California ECHO pilot
+
+Open `http://localhost:3000/los-angeles/echo` with internet access. The
+map loads USGS topographic tiles. Click a point or enter coordinates
+in Analysis to check CAL FIRE's State Responsibility Area layer and
+the National Weather Service alert feed. Use **Refresh data** to check
+the selected point again. The pilot uses public endpoints and needs
+no API key or local snapshot.
 
 ## Checks
 
@@ -41,7 +49,7 @@ Upstream font project: https://github.com/rsms/inter.
 - `src/components/theme/`: theme context and accessible toggle.
 - `src/styles/`: light/night tokens and screen styles.
 - `src/mocks/`: fixed region and coverage fixtures.
-- `src/lib/data/`: mock-backed functions; components never import fixtures.
+- `src/lib/data/`: source adapters and sample data functions.
 - `src/types/`: region, source status and coverage types.
 
 ## Routes and preview states
@@ -100,5 +108,4 @@ The restricted agent environment cannot run a local server or browser.
 Build and source checks run there; visual, keyboard, and interaction
 checks must be completed locally before marking Stage 1 complete.
 
-Follow `../AGENTS.md`, `../docs/OPEN_QUESTIONS.md`, and
-`../design/tokens.md`. Do not add real data or map integrations at this stage.
+Follow `../AGENTS.md`, `../docs/OPEN_QUESTIONS.md`, and `../design/tokens.md`.

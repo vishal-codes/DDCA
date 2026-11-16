@@ -14,8 +14,14 @@ import { RiskChip } from "@/components/shared/risk-chip";
 import { SourceTag } from "@/components/shared/source-tag";
 import { SampleCitation } from "@/components/shared/sample-citation";
 import { ZoneTable } from "./zone-table";
+import { EchoPointScreen } from "./echo-point-screen";
 
 export function EchoScreen({ regionId }: { regionId: RegionId }) {
+  const { liveEcho } = useAppShell();
+  return liveEcho ? <EchoPointScreen /> : <SampleEchoScreen regionId={regionId} />;
+}
+
+function SampleEchoScreen({ regionId }: { regionId: RegionId }) {
   const { previewState, openCoverage } = useAppShell();
   const [tab, setTab] = useState<PanelTab>(regionId === "jakarta" ? "Layers" : "Analysis");
   const [selected, setSelected] = useState("A");

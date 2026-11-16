@@ -13,12 +13,13 @@ import { AskDrawer } from "@/components/ask/ask-drawer";
 import { Dialog } from "@/components/shared/dialog";
 import { OfficialBanner } from "@/components/shared/official-banner";
 import { Timeline } from "@/components/panels/timeline";
+import { PreviewControl } from "./preview-control";
 import { usePreviewState } from "./use-preview-state";
 import { TopBar } from "./top-bar";
 import { Footer } from "./footer";
 
 type ShellState = {
-  regionId: RegionId | null; mode: WorkspaceMode | null; previewState: PreviewState;
+  regionId: RegionId | null; mode: WorkspaceMode | null; previewState: PreviewState; liveEcho: boolean;
   selectRegion: (id: RegionId) => void; clearRegion: () => void;
   navigateMode: (mode: WorkspaceMode) => void;
   openCoverage: () => void; openMethods: () => void; openAsk: () => void;
@@ -33,7 +34,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const previewState = usePreviewState();
   const [overlay, setOverlay] = useState<"coverage" | "methods" | "ask" | "regions" | null>(null);
   const [pendingMode, setPendingMode] = useState<WorkspaceMode>("echo");
-  const official = regionId ? getOfficialSample(regionId, previewState) : null;
+  const liveEcho = regionId === "los-angeles" && current?.mode === "echo" && previewState === "normal";
+  const official = regionId && !liveEcho ? getOfficialSample(regionId, previewState) : null;
   function selectRegion(id: RegionId) {
     setOverlay(null);
     router.push(workspaceHref(id, current?.mode ?? (overlay === "regions" ? pendingMode : "echo"), previewState));
@@ -43,7 +45,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     else { setPendingMode(mode); setOverlay("regions"); }
   }
   return (
-    <ShellContext.Provider value={{ regionId, mode: current?.mode ?? null, previewState,
+    <ShellContext.Provider value={{ regionId, mode: current?.mode ?? null, previewState, liveEcho,
       selectRegion, navigateMode, clearRegion: () => { setOverlay(null); setPendingMode("echo"); },
       openCoverage: () => setOverlay("coverage"), openMethods: () => setOverlay("methods"), openAsk: () => setOverlay("ask"),
     }}>
@@ -56,10 +58,11 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <span>{previewState === "offline" ? "Showing cached sample data. This is not a connection check." : previewState === "stale" ? "Sample records may be out of date. Check official information." : "Sample scenario only. No current conditions are being reported."}</span>
         </div>}
         <main id="main-content" className="app-main">{children}</main>
-        {pathname !== "/data-and-methods" && <Timeline key={pathname} initialExpanded={current?.mode === "echo"} />}
+        {liveEcho && process.env.NODE_ENV === "development" && <div className="echo-preview-toolbar"><PreviewControl /></div>}
+        {!liveEcho && pathname !== "/data-and-methods" && <Timeline key={pathname} initialExpanded={current?.mode === "echo"} />}
         <Footer />
       </div>
-      {overlay === "coverage" && <CoveragePanel regionId={regionId} previewState={previewState} onClose={() => setOverlay(null)} />}
+      {overlay === "coverage" && <CoveragePanel regionId={regionId} previewState={previewState} liveEcho={liveEcho} onClose={() => setOverlay(null)} />}
       {overlay === "methods" && <MethodsDialog onClose={() => setOverlay(null)} />}
       {overlay === "ask" && <AskDrawer key={`${regionId}-${previewState}`} onClose={() => setOverlay(null)} />}
       {overlay === "regions" && <Dialog title={`Choose a region for ${pendingMode.toUpperCase()}`} onClose={() => setOverlay(null)}>

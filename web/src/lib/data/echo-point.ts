@@ -1,0 +1,23 @@
+import type { NwsAlert } from "./nws-alerts";
+import type { WildfireFinding, WildfirePoint } from "./wildfire";
+
+export const ECHO_START_POINT: WildfirePoint = { latitude: 34.35, longitude: -118.4 };
+
+export type PointSource<T> =
+  | { status: "checked"; checkedAt: string; data: T }
+  | { status: "unavailable" };
+
+export type EchoPointResult = {
+  wildfire: PointSource<WildfireFinding>;
+  alerts: PointSource<NwsAlert[]>;
+};
+
+export async function getEchoPoint(point: WildfirePoint, signal: AbortSignal): Promise<EchoPointResult> {
+  const query = new URLSearchParams({
+    latitude: String(point.latitude),
+    longitude: String(point.longitude),
+  });
+  const response = await fetch(`/api/echo/point?${query}`, { signal, cache: "no-store" });
+  if (!response.ok) throw new Error("The point lookup could not be reached.");
+  return response.json();
+}

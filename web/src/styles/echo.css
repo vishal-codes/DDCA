@@ -21,3 +21,34 @@
 .zone-table th button { min-width: 44px; padding: 4px; font-weight: 700; color: var(--text); background: transparent; border: 0; }
 .zone-table td .chip { margin-top: 4px; padding-inline: 6px; font-size: 11px; }
 .selected-row { background: var(--accent-soft); }
+.wildfire-finding { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+.echo-point-screen { height: 100%; display: flex; flex-direction: column; }
+.echo-point-screen .workspace-grid { flex: 1; min-height: 0; height: auto; }
+.echo-map-viewport, .echo-map-tiles { position: absolute; inset: 0; overflow: hidden; }
+.echo-map-viewport { cursor: crosshair; touch-action: none; }
+.echo-map-viewport:active { cursor: grabbing; }
+.echo-map-viewport:focus-visible { outline-offset: -4px; }
+.echo-map-tiles, .echo-map-pin { pointer-events: none; }
+.echo-map-tiles img { position: absolute; width: 256px; height: 256px; max-width: none; }
+[data-theme="night"] .echo-map-tiles { filter: brightness(.72) saturate(.8); }
+.echo-map-pin { position: absolute; z-index: 1; width: 20px; height: 20px; transform: translate(-50%, -50%); border-radius: 50%; background: var(--accent); border: 3px solid white; box-shadow: 0 0 0 2px #18352f; }
+.echo-map-guide { position: absolute; top: 16px; left: 16px; z-index: 2; max-width: 320px; padding: 12px 16px; }
+.echo-map-guide h1 { font-size: var(--text-section); font-weight: 700; }
+.echo-map-credit { position: absolute; right: 12px; bottom: 12px; z-index: 2; display: inline-flex; align-items: center; padding: 0 10px; color: var(--text); font-size: var(--text-caption); }
+.echo-point-form { padding: 8px 0; }
+.echo-point-form > div { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.echo-point-form > button { margin-right: 12px; }
+.echo-point-form input { min-width: 0; }
+.echo-point-scope { margin-top: 12px; }
+.echo-alert-list { margin: 8px 0; padding: 0; list-style: none; }
+.echo-alert-list li + li { margin-top: 8px; }
+.echo-alert-title { text-align: left; }
+.echo-alert-detail { display: grid; gap: 12px; overflow-wrap: anywhere; }
+.echo-alert-detail section h3 { margin-bottom: 4px; }
+.echo-alert-text { white-space: pre-wrap; }
+.wildfire-zone-overlay { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.wildfire-zone-legend { position: absolute; bottom: 12px; left: 12px; z-index: 2; padding: 10px 12px; }
+.wildfire-zone-legend ul { display: flex; gap: 12px; padding: 0; margin: 6px 0; list-style: none; }
+.wildfire-zone-legend li { display: flex; align-items: center; gap: 6px; }
+.wildfire-zone-swatch { width: 14px; height: 12px; border: 1px solid var(--text-muted); border-radius: 2px; }
+.echo-preview-toolbar { display: flex; padding: 0 16px; background: var(--surface); }

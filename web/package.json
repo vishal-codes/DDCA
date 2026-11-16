@@ -10,7 +10,8 @@
     "start": "next start",
     "typecheck": "next typegen && tsc --noEmit",
     "lint": "eslint . --max-warnings=0",
-    "test": "node --experimental-strip-types --experimental-test-isolation=none --test tests/*.test.mjs"
+    "test": "node --experimental-strip-types --experimental-test-isolation=none --test tests/*.test.mjs",
+    "import:wildfire": "node --experimental-strip-types scripts/import-wildfire.mjs"
   },
   "dependencies": {
     "next": "16.4.3",
