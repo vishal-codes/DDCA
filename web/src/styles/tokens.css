@@ -29,6 +29,12 @@
   --risk-high-text: #8a3f00;
   --risk-extreme-bg: #f5d5d5;
   --risk-extreme-text: #7a1515;
+  --status-live-bg: #ddf1e4;
+  --status-live-text: #1b5e36;
+  --status-daily-bg: #e0edff;
+  --status-daily-text: #214b84;
+  --status-static-bg: #eee6fa;
+  --status-static-text: #65408d;
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
@@ -77,5 +83,11 @@
   --risk-high-text: #fad2ac;
   --risk-extreme-bg: #4f1d1d;
   --risk-extreme-text: #f6c9c9;
+  --status-live-bg: #1f3d2b;
+  --status-live-text: #bfe8ce;
+  --status-daily-bg: #1c304c;
+  --status-daily-text: #bfdaff;
+  --status-static-bg: #38294a;
+  --status-static-text: #e1c9fa;
   --shadow-card: 0 1px 4px rgb(0 0 0 / 18%);
 }

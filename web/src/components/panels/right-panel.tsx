@@ -27,7 +27,7 @@ export function RightPanel({ tab, onTab, regionId, layers, onLayerChange, childr
       const next = event.key === "ArrowRight" ? (index + 1) % tabs.length : event.key === "ArrowLeft" ? (index + tabs.length - 1) % tabs.length : event.key === "Home" ? 0 : event.key === "End" ? tabs.length - 1 : null;
       if (next !== null) { event.preventDefault(); onTab(tabs[next]); document.getElementById(`${id}-${tabs[next]}`)?.focus(); }
     }}>{item}</button>)}</div>
-    <div id={`${id}-content`} role="tabpanel" aria-labelledby={`${id}-${tab}`} className="panel-content">
+    <div key={tab} id={`${id}-content`} role="tabpanel" aria-labelledby={`${id}-${tab}`} className="panel-content">
       {tab === "Analysis" && children}
       {tab === "Layers" && (layersContent ?? (layers && onLayerChange && <LayerControls regionId={regionId} layers={layers} onChange={onLayerChange} />))}
       {tab === "Evidence" && (evidenceContent ?? <><h2>Sources and dates</h2><p className="sample-note">Sample data. No live sources are connected.</p>{getRegionCoverage(regionId, previewState).map((entry) => <section className="evidence-entry" key={entry.kind}>

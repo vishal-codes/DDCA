@@ -16,6 +16,11 @@
 .chip-group { display: flex; flex-wrap: wrap; gap: 4px; }
 .neutral-chip { font-weight: 400; color: var(--text-muted); padding-inline: 9px; }
 .status-icon { display: inline-block; flex: 0 0 8px; height: 8px; background: currentColor; border-radius: 50%; }
+.status-chip { border-color: transparent; }
+.status-live { background: var(--status-live-bg); color: var(--status-live-text); }
+.status-updated_daily { background: var(--status-daily-bg); color: var(--status-daily-text); }
+.status-static_map { background: var(--status-static-bg); color: var(--status-static-text); }
+.status-global_model { background: var(--accent-soft); color: var(--accent); }
 .status-updated_daily .status-icon { background: none; border: 2px solid currentColor; }
 .status-static_map .status-icon { border-radius: 0; }
 .status-global_model .status-icon { border-radius: 0; transform: rotate(45deg); }

@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { CAL_FIRE_SOURCE, type WildfireCategory } from "@/lib/data/wildfire";
 import {
-  getWildfirePolygons, WEB_MERCATOR_HALF_WORLD, wildfireViewportUrl,
-  type MapViewport, type WildfirePolygon,
+  getCachedWildfirePolygons, getCachedWildfireViewport, getServerWildfirePolygons, getWildfirePolygons,
+  subscribeWildfirePolygons, WEB_MERCATOR_HALF_WORLD, wildfireViewportUrl, type MapViewport,
 } from "@/lib/data/wildfire-zones";
 import { worldSize } from "@/lib/map/basemap";
 
@@ -14,27 +14,28 @@ const zoneColors: Record<WildfireCategory, string> = {
   "Very High": "#ff0000",
 };
 
-type ZoneResult = { url: string; attempt: number; polygons: WildfirePolygon[] | null };
+type ZoneResult = { url: string; attempt: number; count?: number; failed?: boolean };
 
-export function WildfireZoneOverlay({ viewport }: { viewport: MapViewport }) {
+export function WildfireZoneOverlay({ viewport, opacity = 55 }: { viewport: MapViewport; opacity?: number }) {
   const canvas = useRef<HTMLCanvasElement>(null);
   const [result, setResult] = useState<ZoneResult>();
   const [attempt, setAttempt] = useState(0);
   const url = wildfireViewportUrl(viewport);
+  const polygons = useSyncExternalStore(subscribeWildfirePolygons, getCachedWildfirePolygons, getServerWildfirePolygons);
 
   useEffect(() => {
     if (!url) return;
     const controller = new AbortController();
     const timer = window.setTimeout(() => {
       getWildfirePolygons(url, controller.signal).then(
-        (polygons) => {
-          if (!controller.signal.aborted) setResult({ url, attempt, polygons });
+        (data) => {
+          if (!controller.signal.aborted) setResult({ url, attempt, count: data.length });
         },
         () => {
-          if (!controller.signal.aborted) setResult({ url, attempt, polygons: null });
+          if (!controller.signal.aborted) setResult({ url, attempt, failed: true });
         },
       );
-    }, 250);
+    }, getCachedWildfireViewport(url) ? 0 : 100);
     return () => {
       window.clearTimeout(timer);
       controller.abort();
@@ -42,8 +43,7 @@ export function WildfireZoneOverlay({ viewport }: { viewport: MapViewport }) {
   }, [url, attempt]);
 
   const current = result?.url === url && result.attempt === attempt ? result : undefined;
-  const polygons = current?.polygons;
-  const paths = useMemo(() => polygons?.map(({ category, rings }) => {
+  const paths = useMemo(() => polygons.map(({ category, rings }) => {
     const path = new Path2D();
     for (const ring of rings) {
       path.moveTo(...ring[0]);
@@ -54,10 +54,10 @@ export function WildfireZoneOverlay({ viewport }: { viewport: MapViewport }) {
   }), [polygons]);
 
   const { zoom, left, top, width, height } = viewport;
-  useEffect(() => {
+  useLayoutEffect(() => {
     const element = canvas.current;
     const context = element?.getContext("2d");
-    if (!element || !context || !paths) return;
+    if (!element || !context) return;
     const density = Math.min(window.devicePixelRatio, 2);
     const pixelWidth = Math.round(width * density);
     const pixelHeight = Math.round(height * density);
@@ -75,15 +75,15 @@ export function WildfireZoneOverlay({ viewport }: { viewport: MapViewport }) {
     for (const { path, color } of paths) {
       context.fillStyle = color;
       context.strokeStyle = color;
-      context.globalAlpha = 0.38;
+      context.globalAlpha = opacity / 100 * 0.7;
       context.fill(path, "evenodd");
-      context.globalAlpha = 0.8;
+      context.globalAlpha = opacity / 100;
       context.stroke(path);
     }
-  }, [paths, zoom, left, top, width, height]);
+  }, [paths, zoom, left, top, width, height, opacity]);
 
   return <>
-    {paths && paths.length > 0 && <canvas ref={canvas} className="wildfire-zone-overlay" aria-hidden="true" />}
+    <canvas ref={canvas} className="wildfire-zone-overlay" aria-hidden="true" />
     <section className="surface-card wildfire-zone-legend" aria-label="CAL FIRE wildfire zone legend">
       <h2>Wildfire hazard zones</h2>
       <ul>{Object.entries(zoneColors).map(([category, color]) => <li key={category}>
@@ -91,13 +91,13 @@ export function WildfireZoneOverlay({ viewport }: { viewport: MapViewport }) {
       </li>)}</ul>
       <p className="caption">CAL FIRE. Effective <time dateTime={CAL_FIRE_SOURCE.effectiveDate}>{CAL_FIRE_SOURCE.effectiveDate}</time>.</p>
       <p className="caption" role="status">
-        {!url ? "Zoom in to see mapped zones."
-          : !current ? "Loading mapped zones..."
-          : polygons === null ? "The CAL FIRE layer could not be loaded."
-          : polygons?.length === 0 ? "No mapped zones in this view."
+        {!url ? polygons.length ? "Loaded zones shown. Zoom in to load more detail." : "Zoom in to load mapped zones."
+          : !current ? polygons.length ? "Loaded zones shown. Loading more detail..." : "Loading mapped zones..."
+          : current.failed ? polygons.length ? "Previously loaded zones. More zones could not be loaded." : "The CAL FIRE layer could not be loaded."
+          : current.count === 0 ? "No mapped zones in this requested area."
           : "State Responsibility Areas."}
       </p>
-      {current && polygons === null && <button type="button" className="text-link" onClick={() => setAttempt((value) => value + 1)}>Retry zones</button>}
+      {current?.failed && <button type="button" className="text-link" onClick={() => setAttempt((value) => value + 1)}>Retry zones</button>}
     </section>
   </>;
 }

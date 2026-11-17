@@ -5,7 +5,7 @@ SafeEarth (working name) is a desktop web app for disaster
 preparedness and emergency response, for any region in the world.
 California has the most real data first.
 - ECHO (Emergency Context and Help Overview): how risky is this area
-  and what should we do.
+  and what should we do, for any selected point worldwide.
 - NET (Navigation and Emergency Tracking): stops and hazards, with
   a Google Maps handoff, optionally through an emergency depot.
 - SERA (Safe Emergency Response Alliance): where to stage supplies so
@@ -87,9 +87,23 @@ See docs/OPEN_QUESTIONS.md for details and remaining questions.
   our map. Our own California router comes in Stage 5.
 - V1 risk uses official layers. Use deterministic source adapters,
   snapshot polling, Postgres/PostGIS, and offline geospatial batches.
-  Runtime AI does not read websites; humans review adapters drafted
-  with build-time AI assistance.
+  On-demand source agents may collect local government evidence at
+  runtime from reviewed official domains. Retain citations and dates.
+  New numeric findings and map layers need validated source adapters.
+  Humans review adapters drafted with AI assistance.
+  Temporary free collection reads government pages. OpenRouter supplies
+  optional free hosted summaries; no local model is required. Accept
+  only free model IDs and keep excerpts on provider failure. OpenAI is
+  selected explicitly when paid access is available.
+  Tavily searches reviewed government domains for the resolved city,
+  district and state. Check geographic relevance before summarizing.
+  Broader context stays labeled; missing sources never mean no hazard.
 - Region order: California, an easy second region, then Tokyo.
+  Next ECHO priority: worldwide earthquake city assessment, with Kushiro
+  as a review case. Layers follow source coverage and evidence. Ask
+  should explore the same map records and controls through app functions.
+  Wait for all configured source checks before revealing a city
+  assessment. Report failures and timeouts as gaps; Ask shares its data.
 - Railway hosts web, API, worker, cron, and PostGIS; big files use
   object storage. Everything runs in Docker.
 - Ask uses only our own shared data functions, with source chips and

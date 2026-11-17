@@ -13,7 +13,10 @@ export function NwsAlertDetail({ alert, onClose }: { alert: NwsAlert; onClose: (
         <p className="echo-alert-text">{alert.description ?? "The source did not include alert text."}</p>
       </section>
       {alert.instruction && <section><h3>Official instructions</h3><p className="echo-alert-text">{alert.instruction}</p></section>}
-      <a className="text-link" href={alert.url} target="_blank" rel="noopener noreferrer">Official NWS record (JSON)</a>
+      {alert.webUrl ? <>
+        <a className="text-link" href={alert.webUrl} target="_blank" rel="noopener noreferrer">Official NWS alert bulletin</a>
+        <p className="caption">The official page may show newer bulletins. The issued time and alert text above identify this saved notice.</p>
+      </> : <p className="caption">A readable official bulletin link was not supplied for this notice. The official alert text is shown above.</p>}
     </article>
   </Dialog>;
 }

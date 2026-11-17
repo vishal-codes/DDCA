@@ -14,7 +14,7 @@ const inter = localFont({
 
 export const metadata: Metadata = {
   title: "SafeEarth",
-  description: "Disaster preparedness and emergency response. Sample data only.",
+  description: "Explore disaster context around the world with source dates, government evidence, and explicit data coverage.",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

@@ -13,13 +13,17 @@ import { AskDrawer } from "@/components/ask/ask-drawer";
 import { Dialog } from "@/components/shared/dialog";
 import { OfficialBanner } from "@/components/shared/official-banner";
 import { Timeline } from "@/components/panels/timeline";
-import { PreviewControl } from "./preview-control";
 import { usePreviewState } from "./use-preview-state";
 import { TopBar } from "./top-bar";
 import { Footer } from "./footer";
+import type { EchoPointResult } from "@/lib/data/echo-point";
+import type { WildfirePoint } from "@/lib/data/wildfire";
+
+export type EchoCoverage = { point: WildfirePoint; result: EchoPointResult | null; pending: boolean };
 
 type ShellState = {
   regionId: RegionId | null; mode: WorkspaceMode | null; previewState: PreviewState; liveEcho: boolean;
+  echoCoverage: EchoCoverage | null; setEchoCoverage: (value: EchoCoverage | null) => void;
   selectRegion: (id: RegionId) => void; clearRegion: () => void;
   navigateMode: (mode: WorkspaceMode) => void;
   openCoverage: () => void; openMethods: () => void; openAsk: () => void;
@@ -31,21 +35,28 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const current = parseWorkspacePath(pathname);
   const regionId = current?.regionId ?? null;
-  const previewState = usePreviewState();
+  const globalEcho = pathname === "/echo";
+  const echoRoute = globalEcho || current?.mode === "echo";
+  const requestedPreview = usePreviewState();
+  const previewState = echoRoute ? "normal" : requestedPreview;
   const [overlay, setOverlay] = useState<"coverage" | "methods" | "ask" | "regions" | null>(null);
   const [pendingMode, setPendingMode] = useState<WorkspaceMode>("echo");
-  const liveEcho = regionId === "los-angeles" && current?.mode === "echo" && previewState === "normal";
+  const [echoCoverage, setEchoCoverage] = useState<EchoCoverage | null>(null);
+  const mode = globalEcho ? "echo" : current?.mode ?? null;
+  const liveEcho = echoRoute;
   const official = regionId && !liveEcho ? getOfficialSample(regionId, previewState) : null;
   function selectRegion(id: RegionId) {
     setOverlay(null);
     router.push(workspaceHref(id, current?.mode ?? (overlay === "regions" ? pendingMode : "echo"), previewState));
   }
   function navigateMode(mode: WorkspaceMode) {
-    if (regionId) { setOverlay(null); router.push(workspaceHref(regionId, mode, previewState)); }
+    if (globalEcho && mode === "echo") { setOverlay(null); }
+    else if (!regionId && mode === "echo") { setOverlay(null); router.push("/echo"); }
+    else if (regionId) { setOverlay(null); router.push(workspaceHref(regionId, mode, previewState)); }
     else { setPendingMode(mode); setOverlay("regions"); }
   }
   return (
-    <ShellContext.Provider value={{ regionId, mode: current?.mode ?? null, previewState, liveEcho,
+    <ShellContext.Provider value={{ regionId, mode, previewState, liveEcho, echoCoverage, setEchoCoverage,
       selectRegion, navigateMode, clearRegion: () => { setOverlay(null); setPendingMode("echo"); },
       openCoverage: () => setOverlay("coverage"), openMethods: () => setOverlay("methods"), openAsk: () => setOverlay("ask"),
     }}>
@@ -58,11 +69,10 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <span>{previewState === "offline" ? "Showing cached sample data. This is not a connection check." : previewState === "stale" ? "Sample records may be out of date. Check official information." : "Sample scenario only. No current conditions are being reported."}</span>
         </div>}
         <main id="main-content" className="app-main">{children}</main>
-        {liveEcho && process.env.NODE_ENV === "development" && <div className="echo-preview-toolbar"><PreviewControl /></div>}
-        {!liveEcho && pathname !== "/data-and-methods" && <Timeline key={pathname} initialExpanded={current?.mode === "echo"} />}
+        {(mode === "net" || mode === "sera") && <Timeline key={pathname} initialExpanded={false} />}
         <Footer />
       </div>
-      {overlay === "coverage" && <CoveragePanel regionId={regionId} previewState={previewState} liveEcho={liveEcho} onClose={() => setOverlay(null)} />}
+      {overlay === "coverage" && <CoveragePanel regionId={regionId} previewState={previewState} liveEcho={liveEcho} coverage={echoCoverage} onClose={() => setOverlay(null)} />}
       {overlay === "methods" && <MethodsDialog onClose={() => setOverlay(null)} />}
       {overlay === "ask" && <AskDrawer key={`${regionId}-${previewState}`} onClose={() => setOverlay(null)} />}
       {overlay === "regions" && <Dialog title={`Choose a region for ${pendingMode.toUpperCase()}`} onClose={() => setOverlay(null)}>

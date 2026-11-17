@@ -54,3 +54,19 @@
 .event-key-watch .legend-shape { border-radius: 0; clip-path: polygon(50% 0, 100% 100%, 0 100%); }
 .event-key-warning .legend-shape { border-radius: 0; clip-path: polygon(30% 0, 70% 0, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0 70%, 0 30%); }
 .map-caption { position: absolute; right: 16px; bottom: 16px; }
+.maplibre-surface { position: absolute; inset: 0; }
+.maplibre-surface .maplibregl-ctrl-top-right { top: 6px; right: 6px; z-index: 3; }
+.maplibre-surface .maplibregl-ctrl-bottom-right { z-index: 3; }
+.maplibre-surface .maplibregl-ctrl-group { background: var(--surface); color: var(--text); border: 1px solid var(--border); border-radius: var(--radius-card); box-shadow: var(--shadow-card); }
+.maplibre-surface .maplibregl-ctrl-group button { width: 44px; height: 44px; background-color: var(--surface); }
+.maplibre-surface .maplibregl-ctrl-group button + button { border-color: var(--border); }
+[data-theme="night"] .maplibre-surface .maplibregl-ctrl-icon { filter: invert(1); }
+.maplibre-surface .maplibregl-ctrl-attrib { max-width: 360px; color: var(--text); background: var(--surface); font-size: 11px; line-height: 16px; }
+.maplibre-surface .maplibregl-ctrl-attrib a { color: var(--text); }
+.maplibre-surface .maplibregl-ctrl-attrib-button { width: 44px; height: 44px; background-color: transparent; background-repeat: no-repeat; background-position: center; background-size: 24px 24px; }
+[data-theme="night"] .maplibre-surface .maplibregl-ctrl-attrib-button { filter: invert(1); }
+.maplibre-surface .maplibregl-ctrl-attrib.maplibregl-compact { min-width: 44px; min-height: 44px; padding: 0; }
+.maplibre-surface .maplibregl-ctrl-attrib.maplibregl-compact-show { padding: 0 44px 0 8px; display: flex; align-items: center; }
+.maplibre-layers-trigger { position: absolute; top: 120px; right: 16px; z-index: 3; }
+.basemap-loading { position: absolute; left: 16px; bottom: 120px; z-index: 2; padding: 8px 12px; font-size: var(--text-caption); }
+.basemap-notice { position: absolute; left: 16px; bottom: 90px; z-index: 2; padding: 8px 12px; font-size: var(--text-caption); }

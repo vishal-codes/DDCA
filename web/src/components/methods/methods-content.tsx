@@ -11,7 +11,11 @@ const rows = [
 export function MethodsContent() {
   return (
     <div className="methods-content">
-      <p className="sample-note">Los Angeles ECHO checks CAL FIRE wildfire hazard and National Weather Service alerts for the selected point. Views labeled Sample data use design examples.</p>
+      <p>ECHO accepts locations worldwide. It checks available government feeds and collects local government source evidence for the selected point. Views labeled Sample data use design examples.</p>
+      <section><h3>Connected sources</h3>
+        <p>USGS supplies worldwide earthquake observations. CAL FIRE supplies the California wildfire map, and NWS supplies alerts in its forecast areas. Each finding keeps its source date and check time.</p>
+        <p>The government-source agent searches permitted official domains for the selected jurisdiction. Its summaries link to retrieved government pages. A new mapped hazard level needs a validated dataset covering that point.</p>
+      </section>
       <div className="table-scroll"><table>
         <caption className="sr-only">Planned California sources and unresolved update schedules</caption>
         <thead><tr><th scope="col">Kind of data</th><th scope="col">California v1 source</th><th scope="col">Updates</th></tr></thead>
@@ -25,7 +29,7 @@ export function MethodsContent() {
       <section><h3>Known limits</h3>
         <p>Official alerts and orders always outrank our scores. Risk in v1 comes from official layers. Our own risk model comes later.</p>
         <p>Road closures and evacuation zones appear only where a source exists. Coverage is shown per kind of data, with a source and date. Sources for other regions and the population dataset remain undecided.</p>
-        <p>Los Angeles ECHO shows the date of the CAL FIRE map and the time each source was checked. Refresh data to check the alert feed again.</p>
+        <p>ECHO shows the date of each published map and the time each feed was checked. Refresh data repeats the source checks. A failed refresh keeps earlier evidence with an amber stale indicator.</p>
       </section>
     </div>
   );

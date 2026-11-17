@@ -56,6 +56,14 @@ on the brighter accent. Validate WCAG AA contrast when implementing.
 - Zoomed out uses H3 hexagons; zoomed in uses zones, roads, and official
   boundaries. Keep risk icon plus text wherever risk is identified.
 
+## Coverage status colors
+
+Coverage statuses use color together with their text and icon.
+Live uses green, Updated daily uses blue, Static map uses purple,
+Global model uses teal, and Not available stays gray. The shared
+`StatusChip` uses the same palette throughout the app. Home's guide
+buttons expand the explanation for each status.
+
 ## Typography
 
 Use Inter via next/font, with tabular numbers for times. Estimated scale:

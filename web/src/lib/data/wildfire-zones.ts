@@ -1,22 +1,25 @@
 import { USGS_TOPO, worldSize } from "../map/basemap";
 import { CAL_FIRE_SOURCE, isWildfireCategory, type WildfireCategory } from "./wildfire";
+import { createWildfireZoneCache } from "./wildfire-zone-cache";
 
 export const WILDFIRE_ZONE_MIN_ZOOM = 9;
 export const WEB_MERCATOR_HALF_WORLD = Math.PI * 6378137;
 
 export type MapViewport = { zoom: number; left: number; top: number; width: number; height: number };
 type Position = [number, number];
-export type WildfirePolygon = { category: WildfireCategory; rings: Position[][] };
+export type WildfirePolygon = { id: number; category: WildfireCategory; rings: Position[][] };
 
 export function wildfireViewportUrl({ zoom, left, top, width, height }: MapViewport) {
   if (zoom < WILDFIRE_ZONE_MIN_ZOOM || width <= 0 || height <= 0) return null;
-  const world = worldSize(zoom);
+  const requestZoom = Math.floor(zoom);
+  const scale = 2 ** (requestZoom - zoom);
+  const world = worldSize(requestZoom);
   const tile = USGS_TOPO.tileSize;
   const metersPerPixel = WEB_MERCATOR_HALF_WORLD * 2 / world;
-  const xmin = Math.max(0, Math.floor(left / tile) * tile) * metersPerPixel - WEB_MERCATOR_HALF_WORLD;
-  const ymin = WEB_MERCATOR_HALF_WORLD - Math.min(world, Math.ceil((top + height) / tile) * tile) * metersPerPixel;
-  const xmax = Math.min(world, Math.ceil((left + width) / tile) * tile) * metersPerPixel - WEB_MERCATOR_HALF_WORLD;
-  const ymax = WEB_MERCATOR_HALF_WORLD - Math.max(0, Math.floor(top / tile) * tile) * metersPerPixel;
+  const xmin = Math.max(0, (Math.floor(left * scale / tile) - 1) * tile) * metersPerPixel - WEB_MERCATOR_HALF_WORLD;
+  const ymin = WEB_MERCATOR_HALF_WORLD - Math.min(world, (Math.ceil((top + height) * scale / tile) + 1) * tile) * metersPerPixel;
+  const xmax = Math.min(world, (Math.ceil((left + width) * scale / tile) + 1) * tile) * metersPerPixel - WEB_MERCATOR_HALF_WORLD;
+  const ymax = WEB_MERCATOR_HALF_WORLD - Math.max(0, (Math.floor(top * scale / tile) - 1) * tile) * metersPerPixel;
   const query = new URLSearchParams({
     where: "1=1",
     geometry: [xmin, ymin, xmax, ymax].join(","),
@@ -24,7 +27,7 @@ export function wildfireViewportUrl({ zoom, left, top, width, height }: MapViewp
     inSR: "3857",
     outSR: "3857",
     spatialRel: "esriSpatialRelIntersects",
-    outFields: "FHSZ_Description",
+    outFields: "OBJECTID,FHSZ_Description",
     returnGeometry: "true",
     returnZ: "false",
     maxAllowableOffset: String(Math.max(10, metersPerPixel)),
@@ -70,18 +73,24 @@ export function readWildfirePolygons(value: unknown): WildfirePolygon[] {
   const polygons: WildfirePolygon[] = [];
   for (const feature of result.features) {
     const { attributes, geometry } = asRecord(feature);
-    const category = asRecord(attributes).FHSZ_Description;
+    const { OBJECTID: id, FHSZ_Description: category } = asRecord(attributes);
     const { rings } = asRecord(geometry);
-    if (!isWildfireCategory(category) || !Array.isArray(rings)) {
+    if (typeof id !== "number" || !Number.isSafeInteger(id) || id < 0 || !isWildfireCategory(category) || !Array.isArray(rings)) {
       throw new Error("Invalid wildfire zone category or geometry.");
     }
-    if (rings.length > 0) polygons.push({ category, rings: rings.map(readRing) });
+    if (rings.length > 0) polygons.push({ id, category, rings: rings.map(readRing) });
   }
   return polygons;
 }
 
-export async function getWildfirePolygons(url: string, signal: AbortSignal) {
+const zoneCache = createWildfireZoneCache(async (url, signal) => {
   const response = await fetch(url, { signal: AbortSignal.any([signal, AbortSignal.timeout(12000)]) });
   if (!response.ok) throw new Error("CAL FIRE zones could not be loaded.");
   return readWildfirePolygons(await response.json());
-}
+});
+
+export const getWildfirePolygons = zoneCache.read;
+export const getCachedWildfirePolygons = zoneCache.getSnapshot;
+export const getServerWildfirePolygons = zoneCache.getServerSnapshot;
+export const getCachedWildfireViewport = zoneCache.peek;
+export const subscribeWildfirePolygons = zoneCache.subscribe;
